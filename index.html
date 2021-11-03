@@ -4,9 +4,87 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/vue"></script>
     <title>Задание 1</title>
 </head>
 <body>
-    
+    <div id="app">
+      <h1> {{ title }} </h1>
+      <div class="massage" v-if="massage">
+        <p> {{ massage }} </p>
+      </div>
+      <div class="new-note">
+          <input v-model="note.title" type="text">
+          <textarea v-model="note.descr"></textarea>
+          <button @click='AddNote'>new-note</button>
+      </div>
+
+     <div class="notes">
+      <div class="note" v-for="(note, index) in notes" :key="index">
+         <div class="note-header">
+             <p> {{ note.title }} </p>
+         </div>
+
+         <div class="note-budy">
+            <p> {{ note.descr }} </p>
+            <samp>{{ note.data }}</samp>
+         </div>
+      </div>
+    </div>
+    </div>
+
+
+    <script>
+        var app = new Vue({
+            el:'#app',
+            data: {
+                title: 'Notes App',
+                massage: null,
+                note: {
+                    title:'',
+                    descr:'',
+                },
+
+                notes: [ 
+                    {
+                      title: 'First Note',
+                      descr: 'Description for first note',
+                      data: new Date(Date.now()).toDateString()
+                    },
+                    {
+                      title: 'Second Note',
+                      descr: 'Description for second note',
+                      data: new Date(Date.now()).toDateString()
+                    },
+                    {
+                      title: 'Third Note',
+                      descr: 'Description for third note',
+                      data: new Date(Date.now()).toDateString()
+                    },
+                ]
+            },
+
+            methods: {
+                AddNote() {
+                    //console.log(this.note)
+                    let {title, descr} = this.note
+                    if(title === '') {
+                        this.massage = 'title'
+                        return false
+
+                    }
+                    this.notes.push({
+                        title,
+                        descr,
+                        data: new Date(Date.now()).toDateString()
+                    })
+                    this.massage = null
+                    this.note.title = ''
+                    this.note.descr = ''
+                }
+            }
+
+        })
+    </script>
 </body>
 </html>
